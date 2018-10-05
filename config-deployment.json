@@ -1,0 +1,17 @@
+{
+    "dev": {
+        "role": "arn:aws:iam::945087978355:role/lambda_cbs_execution",
+        "deploymentBucket": "unity-project",
+        "region": "us-east-1"
+    },
+    "staging": {
+        "role": "arn:aws:iam::945087978355:role/lambda_cbs_execution",
+        "deploymentBucket": "unity-project",
+        "region": "us-east-1"
+    },
+    "prod": {
+        "role": "arn:aws:iam::945087978355:role/lambda_cbs_execution",
+        "deploymentBucket": "unity-project",
+        "region": "us-east-1"
+    }
+}

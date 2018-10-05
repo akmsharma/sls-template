@@ -1,0 +1,87 @@
+service: demo
+provider:
+    name: aws
+    runtime: nodejs8.10
+    stage: ${opt:stage, 'dev'}
+    region: ${file(./config-deployment.json):${self:provider.stage}.region}
+    timeout: 30
+    versionFunctions: false,
+    role: ${file(./config-deployment.json):${self:provider.stage}.role}
+    memorySize: 512
+    stackName: ${self:provider.stage}-${self:service}-demo
+    deploymentBucket: ${file(./config-deployment.json):${self:provider.stage}.deploymentBucket}
+    environment: 
+        ENV: ${self:provider.stage}
+package: 
+  include: 
+    - dist/**
+    - node_modules
+    - package.json
+    - package-lock.json
+    - README.md
+  exclude: 
+    - .git/**
+    - .travis.yml
+    - code/**
+functions:
+#    business-service:
+#        name: ${self:provider.stage}-bs-${self:service}
+#        handler: dist/business-service/index.handler
+#       events:
+#            - http:
+#                path: v1/teams/{user_id}/{resource}
+#                method: get
+#                request:
+#                    parameters:
+#                        querystrings:
+#                           duration: false
+#                           group_by: false
+#                           group: false     
+#                        headers:
+#                            token: true
+#                            instance-url: true
+#                        paths:
+#                            user_id: true
+#                            resource: true
+#                authorizer: 
+#                    name: ${self:provider.stage}-authorizer  
+#                    arn:  arn:aws:lambda:us-east-1:945087978355:function:${self:provider.stage}-authorizer 
+#                    resultTtlInSeconds: 0
+#                   identitySource: method.request.header.Authorization, method.request.header.ClientId
+#                    type: request                
+#        environment: 
+#            ENV: ${self:provider.stage}
+#            SERVICE: ${self:service} 
+#        tags:
+#            ENV: ${self:provider.stage}
+#            SERVICE: ${self:service}
+#            TYPE: BusinessService 
+#            AUTHOR: author@adobe.com       
+#    tech-service:
+#        name: ${self:provider.stage}-ts-${self:service}
+#       handler: dist/tech-service/index.handler
+#        environment: 
+#            SERVICE: ${self:service}
+#            FUNCTIONS: user
+#        tags:
+#            ENV: ${self:provider.stage}
+#            SERVICE: ${self:service}
+#           TYPE: TechnicalService
+#            AUTHOR: author@adobe.com
+#    tech-func-user:
+#        name: ${self:provider.stage}-tf-${self:service}-user
+#        handler: dist/tech-function/user/index.handler
+#        vpc:
+#            securityGroupIds:
+#                - ${file(./config-deployment.json):${self:provider.stage}.securityGroupIds-1}
+#            subnetIds:
+#                - ${file(./config-deployment.json):${self:provider.stage}.subnetIds-1}
+#                - ${file(./config-deployment.json):${self:provider.stage}.subnetIds-2}
+#        environment: 
+#            ENV: ${self:provider.stage}
+#            SERVICE: ${self:service}
+#        tags:
+#            ENV: ${self:provider.stage}
+#            SERVICE: ${self:service}
+#            TYPE: TechnicalFunction
+#           AUTHOR: author@adobe.com
